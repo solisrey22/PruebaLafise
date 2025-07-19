@@ -1,67 +1,306 @@
-﻿@model IEnumerable<Producto>
-@{
+﻿@{
     ViewData["Title"] = "Lista de Productos";
 }
 
-<div class="card text-success">
-    <div class="card-header text-center">
-        <h5>Lista de Productos</h5>        
+<div class="container mt-4">
+    <h2 class="text-center mb-4">Listado de Productos</h2>
+    <div class="alert alert-info" role="alert">
+       3 Categorias: 1.Tarjetas, 2.Préstamos, 3.Cuentas de Ahorro
     </div>
-    <div class="card-body">
-        <div class="row">
-            <div class="col-md-12">
-                <div class="panel panel-default">
-                    <div class="panel-heading">
-                        <a asp-action="Create" class="btn btn-primary btn-sm">Crear Nuevo</a>
-                        <hr />
-                        <h5 class="panel-title">Productos</h5>
-                    </div>
-                    <div class="panel-body">
-                        <table class="table table-hover table-responsive table-striped" id="MyTable">
-                            <thead>
-                                <tr>
-                                    <th>
-                                        @Html.DisplayNameFor(model => model.Nombre)
-                                    </th>
-                                    <th>
-                                        @Html.DisplayNameFor(model => model.Descripcion)
-                                    </th>
-                                    <th>
-                                        @Html.DisplayNameFor(model => model.IdCategoria)
-                                    </th>
+    <button class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#modalCrear">
+        <i class="bi bi-plus-circle"></i> Nuevo Producto
+    </button>
+    <div class="mb-3">
+        <input type="text" id="buscarNombre" class="form-control" placeholder="Buscar por nombre..." />
+    </div>
+    <table id="tablaProductos" class="table table-bordered table-striped align-middle">
+        <thead class="table-success">
+            <tr>
+                <th style="display:none;">ID</th>
+                <th>Nombre</th>
+                <th>Descripción</th>
+                <th>Categoría</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+</div>
+<div class="card-footer text-muted text-center">
+    CRUD Productos
+</div>
 
-                                    <th>Acciones</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach (var item in Model)
-                                {
-                                    <tr>
-                                        <td>
-                                            @Html.DisplayFor(modelItem => item.Nombre)
-                                        </td>
-                                        <td>
-                                            @Html.DisplayFor(modelItem => item.Descripcion)
-                                        </td>
-                                        <td>
-                                            @Html.DisplayFor(modelItem => item.IdCategoria)
-                                        </td>
-    
-                                        <td>
-                                            <a asp-action="Details" asp-route-id="@item.IdProducto" class="btn btn-light btn-sm">Detalles</a>
-                                            <a asp-action="Edit" asp-route-id="@item.IdProducto" class="btn btn-info btn-sm">Editar</a>
-                                            <a asp-action="Delete" asp-route-id="@item.IdProducto" class="btn btn-danger btn-sm">Eliminar</a>
-                                        </td>
-                                    </tr>
-                                }
-                            </tbody>
-                        </table>
+<!-- MODAL: CREAR PRODUCTO -->
+<div class="modal fade" id="modalCrear" tabindex="-1" aria-labelledby="modalCrearLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <form id="formCrear">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Nuevo Producto LAFISE</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="crearNombre" class="form-label">Nombre</label>
+                        <input type="text" class="form-control" id="crearNombre" required />
+                    </div>
+                    <div class="mb-3">
+                        <label for="crearDescripcion" class="form-label">Descripción</label>
+                        <input type="text" class="form-control" id="crearDescripcion" />
+                    </div>
+                    <div class="mb-3">
+                        <label for="crearCategoria" class="form-label">ID Categoría</label>
+                        <input type="number" class="form-control" id="crearCategoria" required />
                     </div>
                 </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-success">Guardar</button>
+                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- MODAL: VER DETALLES -->
+<div class="modal fade" id="modalVer" tabindex="-1" aria-labelledby="modalVerLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header bg-success text-white">
+                <h5 class="modal-title">Detalle del Producto</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <p><strong>ID:</strong> <span id="verId"></span></p>
+                <p><strong>Nombre:</strong> <span id="verNombre"></span></p>
+                <p><strong>Descripción:</strong> <span id="verDescripcion"></span></p>
+                <p><strong>Categoría:</strong> <span id="verCategoria"></span></p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
             </div>
         </div>
     </div>
-    <div class="card-footer text-muted text-center">
-        CRUD Productos
+</div>
+
+<!-- MODAL: EDITAR PRODUCTO -->
+<div class="modal fade" id="modalEditar" tabindex="-1" aria-labelledby="modalEditarLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <form id="formEditar">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Editar Producto</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <input type="hidden" id="editarIdProducto">
+                    <div class="mb-3">
+                        <label for="editarNombre" class="form-label">Nombre</label>
+                        <input type="text" class="form-control" id="editarNombre">
+                    </div>
+                    <div class="mb-3">
+                        <label for="editarDescripcion" class="form-label">Descripción</label>
+                        <input type="text" class="form-control" id="editarDescripcion">
+                    </div>
+                    <div class="mb-3">
+                        <label for="editarIdCategoria" class="form-label">ID Categoría</label>
+                        <input type="number" class="form-control" id="editarIdCategoria">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                </div>
+            </div>
+        </form>
     </div>
 </div>
+
+<!-- MODAL: ELIMINAR PRODUCTO -->
+<div class="modal fade" id="modalEliminar" tabindex="-1" aria-labelledby="modalEliminarLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header bg-danger text-white">
+                <h5 class="modal-title" id="modalEliminarLabel">Confirmar Eliminación</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+            </div>
+            <div class="modal-body">
+                ¿Estás seguro que deseas eliminar este producto?
+                <input type="hidden" id="IdProductoEliminar" />
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-danger" onclick="confirmarEliminar()">Eliminar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @* <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> *@
+
+    <script>
+        $(document).ready(function () {
+            cargarProductos();
+
+            // Filtrar productos por nombre
+            $('#buscarNombre').on('keyup', function () {
+                let filtro = $(this).val().toLowerCase();
+
+                $('#tablaProductos tbody tr').filter(function () {
+                    let nombre = $(this).find('td:eq(1)').text().toLowerCase();
+                    $(this).toggle(nombre.includes(filtro));
+                });
+            });
+        });
+
+        function cargarProductos() {
+            $.ajax({
+                url: 'http://localhost:5018/api/v1/Productos/ListarProducto',
+                method: 'GET',
+                contentType: 'application/json',
+                success: function (data) {
+                    let filas = '';
+                    $.each(data, function (i, producto) {
+                        filas += `
+                            <tr>
+                                <td style="display:none;">${producto.idProducto}</td>
+                                <td>${producto.nombre}</td>
+                                <td>${producto.descripcion}</td>
+                                <td>${producto.idCategoria}</td>
+                                <td>
+                                    <button class="btn btn-info btn-sm me-1" onclick="verProducto(${producto.idProducto})">
+                                        <i class="bi bi-eye"></i> Ver
+                                    </button>
+                                    <button class="btn btn-warning btn-sm me-1" onclick="editarProducto(${producto.idProducto})">
+                                        <i class="bi bi-pencil"></i> Editar
+                                    </button>
+                                    <button class="btn btn-danger btn-sm" onclick="eliminarProducto(${producto.idProducto})">
+                                        <i class="bi bi-trash"></i> Eliminar
+                                    </button>
+                                </td>
+                            </tr>`;
+                    });
+                    $('#tablaProductos tbody').html(filas);
+                },
+                error: function () {
+                    alert('Error al cargar productos');
+                }
+            });
+        }
+
+        function verProducto(idProducto) {
+            $.ajax({
+                url: `http://localhost:5018/api/v1/Productos/ObtenerProducto/${idProducto}`,
+                method: 'GET',
+                success: function (producto) {
+                    $('#verId').text(producto.idProducto);
+                    $('#verNombre').text(producto.nombre);
+                    $('#verDescripcion').text(producto.descripcion);
+                    $('#verCategoria').text(producto.idCategoria);
+                    const modal = new bootstrap.Modal(document.getElementById('modalVer'));
+                    modal.show();
+                },
+                error: function () {
+                    alert('Error al obtener los detalles del producto');
+                }
+            });
+        }
+
+        function editarProducto(id) {
+            $.ajax({
+                url: `http://localhost:5018/api/v1/Productos/ObtenerProducto/${id}`,
+                method: 'GET',
+                success: function (producto) {
+                    $("#editarIdProducto").val(producto.idProducto);
+                    $("#editarNombre").val(producto.nombre);
+                    $("#editarDescripcion").val(producto.descripcion);
+                    $("#editarIdCategoria").val(producto.idCategoria);
+                    const modal = new bootstrap.Modal(document.getElementById('modalEditar'));
+                    modal.show();
+                },
+                error: function () {
+                    alert("Error al obtener datos del producto");
+                }
+            });
+        }
+
+        function eliminarProducto(id) {
+            $('#IdProductoEliminar').val(id);
+            var modal = new bootstrap.Modal(document.getElementById('modalEliminar'));
+            modal.show();
+        }
+
+        // Crear mi producto
+        $('#formCrear').submit(function (e) {
+            e.preventDefault();
+
+            const nuevoProducto = {
+                nombre: $('#crearNombre').val(),
+                descripcion: $('#crearDescripcion').val(),
+                idCategoria: parseInt($('#crearCategoria').val())
+            };
+
+            $.ajax({
+                url: 'http://localhost:5018/api/v1/Productos/CrearProducto',
+                method: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify(nuevoProducto),
+                success: function () {
+                    $('#modalCrear').modal('hide');
+                    $('#formCrear')[0].reset();
+                    cargarProductos();
+                },
+                error: function () {
+                    alert('Error al crear el producto');
+                }
+            });
+        });
+
+        // Guardar cambios de actualización
+        $('#formEditar').submit(function (e) {
+            e.preventDefault();
+            guardarCambios();
+        });
+
+        function guardarCambios() {
+            const producto = {
+                idProducto: parseInt($("#editarIdProducto").val()),
+                nombre: $("#editarNombre").val(),
+                descripcion: $("#editarDescripcion").val(),
+                idCategoria: parseInt($("#editarIdCategoria").val())
+            };
+
+            $.ajax({
+                url: 'http://localhost:5018/api/v1/Productos/ActualizarProducto',
+                method: 'PUT',
+                contentType: 'application/json',
+                data: JSON.stringify(producto),
+                success: function () {
+                    $("#modalEditar").modal("hide");
+                    cargarProductos();
+                },
+                error: function () {
+                    alert("Error al actualizar el producto.");
+                }
+            });
+        }
+
+        function confirmarEliminar() {
+            var id = $('#IdProductoEliminar').val();
+
+            $.ajax({
+                url: `http://localhost:5018/api/v1/Productos/EliminarProducto?id=${id}`,
+                type: 'DELETE',
+                success: function () {
+                    $('#modalEliminar').modal('hide');
+                    alert("Producto eliminado exitosamente");
+                    cargarProductos(); 
+                },
+                error: function () {
+                    alert("Error al eliminar el producto");
+                }
+            });
+        }
+    </script>
+}
