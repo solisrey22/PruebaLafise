@@ -1,0 +1,6 @@
+@PracticaCRUD_Producto_HostAddress = http://localhost:5018
+
+GET {{PracticaCRUD_Producto_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
