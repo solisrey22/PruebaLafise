@@ -1,9 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
-VisualStudioVersion = 17.12.35707.178 d17.12
+VisualStudioVersion = 17.12.35707.178
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PracticaCRUD-Producto", "PracticaCRUD-Producto\PracticaCRUD-Producto.csproj", "{FFAD048B-4189-4ACD-A718-30F1E0ACDD40}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProductosCRUD.Client", "..\..\..\Downloads\ProductosCRUD-master\ProductosCRUD-master\ProductosCRUD.Client\ProductosCRUD.Client.csproj", "{34A930BE-A770-5DC5-E923-7BEC72BD69C8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{FFAD048B-4189-4ACD-A718-30F1E0ACDD40}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FFAD048B-4189-4ACD-A718-30F1E0ACDD40}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FFAD048B-4189-4ACD-A718-30F1E0ACDD40}.Release|Any CPU.Build.0 = Release|Any CPU
+		{34A930BE-A770-5DC5-E923-7BEC72BD69C8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{34A930BE-A770-5DC5-E923-7BEC72BD69C8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{34A930BE-A770-5DC5-E923-7BEC72BD69C8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{34A930BE-A770-5DC5-E923-7BEC72BD69C8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
