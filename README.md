@@ -38,12 +38,12 @@ En este proyecto **no se utilizan migraciones de EF Core (migrations)** para ges
 
 ## Estructura del proyecto
 
-- **Backend** (ApiProductos o similar):
+- **Backend** (Api 'PracticaCRUD-Producto' o similar):
   - Controladores Web API que exponen los endpoints REST.
   - Uso de EF Core para consultas directas.
   - Invocación a stored procedures para creación y actualización.
   - **Sin uso de migraciones EF Core.**
-- **Frontend** (`MvcProductos` o similar):
+- **Frontend** ('ProductosCRUD.Client' o similar):
   - Proyecto ASP.NET MVC con vistas Razor.
   - Uso de Bootstrap para UI.
   - Uso de jQuery AJAX para consumir las APIs REST del backend.
@@ -53,15 +53,15 @@ En este proyecto **no se utilizan migraciones de EF Core (migrations)** para ges
 - Visual Studio 2022 o superior
 - .NET SDK 8.0 para backend y .NET 7.0 para frontend instalados
 - SQL Server con la base de datos y los stored procedures creados manualmente
-- Configurar cadena de conexión en `appsettings.json` del backend
+- Configurar cadena de conexión en 'appsettings.json' del backend
 
 ## Cómo ejecutar
 
 1. Clona el repositorio
 2. Configura la cadena de conexión en el backend en appsettings.json
 3. Asegúrate que la base de datos y los stored procedures estén creados y disponibles (sin usar migraciones)
-4. Ejecuta primero el proyecto backend (ApiProductos)
-5. Ejecuta el proyecto frontend (MvcProductos)
+4. Ejecuta primero el proyecto backend (PracticaCRUD-Producto)
+5. Ejecuta el proyecto frontend (ProductosCRUD.Client)
 6. Abre el navegador y navega a la URL del frontend (por defecto suele ser https://localhost:xxxx)
    
 ## Notas técnicas
@@ -72,12 +72,11 @@ En este proyecto **no se utilizan migraciones de EF Core (migrations)** para ges
 - Se utiliza Bootstrap para la gestión de modales y estilos responsivos.
 - El filtro de productos por nombre está implementado directamente en el frontend con jQuery.
 
-## Notas importante
-  Se añade en el repositorio script de BD para creación de la BD, con sus tablas relacionadas y creación de tablas y sp
+**Nota importante:** 
+  Se añade en el repositorio script de BD para creación de la BD, con sus tablas relacionadas y sp, además de una imagén PNG de la interfaz principal del sistema.
 
-## Notas importante
-Desarrollador: Reynaldo Antonio Solís Silva
-Email: solissilvareynaldo@gmail.com
-GitHub: (https://github.com/solisrey22)
+**Deasarrollado por:**  Reynaldo Antonio Solís Silva
+**Email:** solissilvareynaldo@gmail.com
+**GitHub:** (https://github.com/solisrey22)
 
 
